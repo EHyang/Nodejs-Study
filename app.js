@@ -19,6 +19,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extende:false}));
 
+app.use('/uploads', express.static('uploads'));
 
 app.set('port', 3000);
 
