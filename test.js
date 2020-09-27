@@ -1,6 +1,9 @@
 const express = require('express');
 var bodyParser = require('body-parser');
 const xlsx = require('xlsx');
+const axios = require('axios');
+const cheerio = require('cheerio');
+const log = console.log;
 
 var app = express();
 
@@ -25,6 +28,34 @@ app.get('/test', function(req,res) {
   }
   text += "</table> </body> </html>";
   res.send(text);
+});
+
+app.get('/list',function(req,res){
+
+  const getHtml = async () =>{
+    try{
+      return await axios.get("https://www.mohw.go.kr/react/ncov/selclinic04ls.jsp");
+    } catch (error){
+      console.error(error);
+    }
+  };
+
+  getHtml().then(html => {
+    let ulList = [];
+    const $ = cheerio.load(html.data);
+    const $bodyList = $("table.co_tb_base tbody.tb_center").children("tr");
+
+    $bodyList.each(function(i,elem){
+      ulList[i] = {
+        name : $(this).find('td.name strong').text()
+      };
+    });
+
+    const data = ulList.filter(n => n.name);
+    res.json(data);
+  });;
+
+
 });
 
 app.listen(3000, () => {
