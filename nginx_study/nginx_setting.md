@@ -3,13 +3,19 @@
 ## Install
 
 - Install
- > sudo apt-get install nginx
+```
+	sudo apt-get install nginx
+```
 
 - Check
- > sudo systemctl status nginx
+```
+	sudo systemctl status nginx
+```
 
 - Modify
- > sudo vi /etc/nginx/nginx.conf
+```
+ 	sudo vi /etc/nginx/nginx.conf
+```
  > (http 사이에)
  ```
 	server {
@@ -25,7 +31,11 @@
 ```
 
 - Move
- > sudo mv /etc/nginx/sites-enabled/default /etc/nginx/
+```
+	sudo mv /etc/nginx/sites-enabled/default /etc/nginx/
+```
 
 - Start
- > sudo service nginx start
+```
+	sudo service nginx start
+```
