@@ -3,7 +3,6 @@ var bodyParser = require('body-parser');
 const xlsx = require('xlsx');
 const axios = require('axios');
 const cheerio = require('cheerio');
-const log = console.log;
 
 var app = express();
 
