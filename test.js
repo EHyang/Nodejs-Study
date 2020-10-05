@@ -4,6 +4,14 @@ const xlsx = require('xlsx');
 const axios = require('axios');
 const cheerio = require('cheerio');
 
+const request = require('request');
+const readline = require('readline');
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
 var app = express();
 
 app.set('port', 3000);
@@ -52,14 +60,72 @@ app.get('/list', async function(req, res) {
         };
       });
 
-
-        const data = ulList.filter(n => n.name);
-        res.json(data);
+      const data = ulList.filter(n => n.name);
+      res.json(data);
     });
   }
+});
 
+app.get('/craw', function(req, res, next) {
+  console.log("여기는 옴...");
+  let all = [];
+  let id = 1;
 
+  const getHtml = async number => {
+    let ulList = [];
+    console.log(number);
+    await axios.get(`https://www.mohw.go.kr/react/ncov/selclinic04ls.jsp?page=${number}`).then(html => {
+      const $ = cheerio.load(html.data);
+      const $bodyList = $("table.co_tb_base tbody.tb_center").children("tr");
+      $bodyList.each(function(i, elem) {
+        if ($(this).find('td.name strong').text()) {
+          console.log($(this).find('td.name strong').text());
+          ulList[i] = {
+            name: $(this).find('td.name strong').text()
+          };
+        } else {
+          console.log("ㄴㄴ");
+        }
+      });
+      all.push(ulList);
+      //console.log(ulList);
+      console.log(all);
+      if (number === 30) {
+        res.send(all);
+      }
+    });
+  };
+  for (var i = 1; i <= 30; i++) {
+    getHtml(i);
+  }
+});
 
+app.get('/craw2', async function(req, res, next) {
+  let all = "";
+  let id = 1;
+
+  const getHtml = async number => {
+    let ulList = "";
+    await axios.get(`https://www.mohw.go.kr/react/ncov/selclinic04ls.jsp?page=${number}`).then(html => {
+      const $ = cheerio.load(html.data);
+      const $bodyList = $("table.co_tb_base tbody.tb_center").children("tr");
+      $bodyList.each(function(i, elem) {
+        if ($(this).find('td.name strong').text()) {
+          ulList += $(this).find('td.name strong').text() + '<br>';
+        } else {
+          console.log("ㄴㄴ");
+        }
+      });
+      all += ulList;
+      if (number === 30) {
+        res.send(all);
+      }
+    });
+  };
+  for (var i = 1; i <= 30; i++) {
+    console.log(i);
+    await getHtml(i);
+  }
 });
 
 app.listen(3000, () => {
