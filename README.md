@@ -6,4 +6,5 @@
 - Youtube 스터디
 
 ## To Do
-- [ ] Node + flutter 기반 개인 프로젝트 진행
+
+- [] Node.js 이론 
