@@ -7,4 +7,5 @@
 
 ## To Do
 
-- [] Node.js 이론 
+- [] Node.js 이론
+- [x] Git ssh 연동 
