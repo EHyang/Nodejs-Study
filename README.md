@@ -4,6 +4,7 @@
 - 1일 1커밋 목표
 - Fastcampus Nodejs 강의 중심
 - Youtube 스터디
+- 개인 공부
 
 ## To Do
 
