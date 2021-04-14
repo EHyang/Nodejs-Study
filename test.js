@@ -7,6 +7,9 @@ const cheerio = require('cheerio');
 const request = require('request');
 const readline = require('readline');
 
+const wifia = require('node-wifi');
+const dotenv = require('dotenv');
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout
@@ -15,6 +18,15 @@ const rl = readline.createInterface({
 var app = express();
 
 app.set('port', 3000);
+
+dotenv.config();
+
+wifia.init({
+	iface: null // network interface, choose a random wifi interface if set to null
+});
+wifia.getCurrentConnections((error, currentConnections) => {
+	console.log(currentConnections);
+});
 
 app.get('/test', function(req, res) {
   const excelFile = xlsx.readFile("list.xls");
@@ -65,6 +77,14 @@ app.get('/list', async function(req, res) {
     });
   }
 });
+
+app.get('/std', async function(req,res){
+  let ready = (req.query.ready == 1) ? 1 : 0;
+
+
+
+  res.json(ready)
+})
 
 app.get('/craw', function(req, res, next) {
   console.log("여기는 옴...");
@@ -127,6 +147,21 @@ app.get('/craw2', async function(req, res, next) {
     await getHtml(i);
   }
 });
+
+app.get('/wwff', (req,res)=>{
+
+
+  res.send(req.socket)
+})
+
+app.get('/wwww',(req,res)=>{
+  dotenv.config()
+
+
+
+
+  res.send(process.env.name)
+})
 
 app.listen(3000, () => {
   console.log('Express server listening on port ' + app.get('port'));

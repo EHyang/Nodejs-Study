@@ -3,7 +3,6 @@ const nunjucks = require('nunjucks');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
-
 class App {
 
   constructor() {
